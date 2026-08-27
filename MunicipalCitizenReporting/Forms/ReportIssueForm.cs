@@ -72,7 +72,8 @@ namespace MunicipalCitizenReporting.Forms
 
                 MessageBox.Show(
                     this,
-                    "Thank you! Your municipal issue has been reported successfully.\n\nReference: #" + issue.Id,
+                    "Report submitted successfully.\n\nReference Number: " + issue.ReferenceNumber +
+                    "\nStatus: " + issue.Status,
                     "Report Submitted",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -93,6 +94,14 @@ namespace MunicipalCitizenReporting.Forms
         private void backButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void viewCapturedIssuesButton_Click(object sender, EventArgs e)
+        {
+            using (var capturedIssuesForm = new CapturedIssuesForm(issueRepository))
+            {
+                capturedIssuesForm.ShowDialog(this);
+            }
         }
 
         private bool ValidateReport()
@@ -138,31 +147,26 @@ namespace MunicipalCitizenReporting.Forms
 
             if (!string.IsNullOrWhiteSpace(locationTextBox.Text))
             {
-                progress += 30;
+                progress += 34;
                 validationErrorProvider.SetError(locationTextBox, string.Empty);
             }
 
             if (categoryComboBox.SelectedIndex >= 0)
             {
-                progress += 30;
+                progress += 33;
                 validationErrorProvider.SetError(categoryComboBox, string.Empty);
             }
 
             if (!string.IsNullOrWhiteSpace(descriptionRichTextBox.Text))
             {
-                progress += 30;
+                progress += 33;
                 validationErrorProvider.SetError(descriptionRichTextBox, string.Empty);
-            }
-
-            if (!string.IsNullOrEmpty(selectedAttachmentPath))
-            {
-                progress += 10;
             }
 
             completionProgressBar.Value = progress;
             completionValueLabel.Text = progress + "% complete";
 
-            if (progress >= 90)
+            if (progress == 100)
             {
                 engagementLabel.Text = "Ready to submit! Thank you for helping improve your community.";
             }

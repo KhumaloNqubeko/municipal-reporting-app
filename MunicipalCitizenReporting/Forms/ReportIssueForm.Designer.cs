@@ -24,6 +24,7 @@ namespace MunicipalCitizenReporting.Forms
         private System.Windows.Forms.ProgressBar completionProgressBar;
         private System.Windows.Forms.Panel buttonPanel;
         private System.Windows.Forms.Button backButton;
+        private System.Windows.Forms.Button viewCapturedIssuesButton;
         private System.Windows.Forms.Button submitReportButton;
         private System.Windows.Forms.OpenFileDialog attachmentOpenFileDialog;
         private System.Windows.Forms.ErrorProvider validationErrorProvider;
@@ -61,6 +62,7 @@ namespace MunicipalCitizenReporting.Forms
             this.completionProgressBar = new System.Windows.Forms.ProgressBar();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.backButton = new System.Windows.Forms.Button();
+            this.viewCapturedIssuesButton = new System.Windows.Forms.Button();
             this.submitReportButton = new System.Windows.Forms.Button();
             this.attachmentOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.validationErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
@@ -327,6 +329,7 @@ namespace MunicipalCitizenReporting.Forms
             // buttonPanel
             // 
             this.buttonPanel.Controls.Add(this.backButton);
+            this.buttonPanel.Controls.Add(this.viewCapturedIssuesButton);
             this.buttonPanel.Controls.Add(this.submitReportButton);
             this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonPanel.Location = new System.Drawing.Point(0, 603);
@@ -341,10 +344,22 @@ namespace MunicipalCitizenReporting.Forms
             this.backButton.Location = new System.Drawing.Point(40, 16);
             this.backButton.Name = "backButton";
             this.backButton.Size = new System.Drawing.Size(178, 43);
-            this.backButton.TabIndex = 1;
+            this.backButton.TabIndex = 2;
             this.backButton.Text = "Back to Main Menu";
             this.backButton.UseVisualStyleBackColor = true;
             this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            //
+            // viewCapturedIssuesButton
+            //
+            this.viewCapturedIssuesButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.viewCapturedIssuesButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.viewCapturedIssuesButton.Location = new System.Drawing.Point(372, 16);
+            this.viewCapturedIssuesButton.Name = "viewCapturedIssuesButton";
+            this.viewCapturedIssuesButton.Size = new System.Drawing.Size(190, 43);
+            this.viewCapturedIssuesButton.TabIndex = 1;
+            this.viewCapturedIssuesButton.Text = "View Captured Issues";
+            this.viewCapturedIssuesButton.UseVisualStyleBackColor = true;
+            this.viewCapturedIssuesButton.Click += new System.EventHandler(this.viewCapturedIssuesButton_Click);
             // 
             // submitReportButton
             // 

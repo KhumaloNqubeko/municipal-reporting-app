@@ -6,6 +6,8 @@ namespace MunicipalCitizenReporting.Models
     {
         public int Id { get; set; }
 
+        public string ReferenceNumber { get; set; }
+
         public string Location { get; set; }
 
         public string Category { get; set; }
@@ -15,5 +17,7 @@ namespace MunicipalCitizenReporting.Models
         public string AttachmentPath { get; set; }
 
         public DateTime DateReported { get; set; }
+
+        public string Status { get; set; }
     }
 }

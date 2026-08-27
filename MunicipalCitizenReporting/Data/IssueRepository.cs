@@ -31,14 +31,17 @@ namespace MunicipalCitizenReporting.Data
             string description,
             string attachmentPath)
         {
+            int issueId = nextIssueId++;
             var issue = new ReportedIssue
             {
-                Id = nextIssueId++,
+                Id = issueId,
+                ReferenceNumber = "REQ-" + issueId,
                 Location = location,
                 Category = category,
                 Description = description,
                 AttachmentPath = attachmentPath,
-                DateReported = DateTime.Now
+                DateReported = DateTime.Now,
+                Status = "Submitted"
             };
 
             issues.Add(issue);
