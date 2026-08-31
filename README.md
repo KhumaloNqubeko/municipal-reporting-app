@@ -1,67 +1,69 @@
-# Municipal Citizen Reporting
+Municipal Citizen Reporting
 
-## Project overview
+Project overview
 
-Municipal Citizen Reporting is a C# Windows Forms application that lets residents submit municipal service issues such as potholes, water leaks, electricity faults, sanitation concerns, and streetlight problems. The current academic-project scope implements issue reporting and leaves the other planned municipal services visible but unavailable.
+Municipal Citizen Reporting is a Windows Forms application written in C# which enables residents to report municipal service problems, for example potholes, water leaks, electrical faults, sanitation issues, and streetlight faults. Within the present academic project scope, the function for reporting issues is implemented while the other municipal services that were planned for inclusion are displayed but not available.
 
-Submitted reports receive an in-memory reference number beginning at `REQ-1001` and the status `Submitted`. Each report captures the reference number, location, municipal category, description, optional supporting file path, submission date and time, and current status. Residents can view all reports captured during the current application session on a read-only history screen.
+The system gives each report a unique reference number beginning with REQ-1001 and states that it has been Submitted when a resident makes a submission. The report includes various important details such as the reference number, the location, the municipal category, a description, any supporting files that have been attached, the date and time of submission, and its present status.
 
-## Requirements
+Residents have the option of looking at a read-only record of all the reports that they have submitted during the present application session.
 
-- Windows 10 or Windows 11
-- Visual Studio 2022 or a newer Visual Studio version that supports .NET Framework desktop development
-- The **.NET desktop development** Visual Studio workload
-- .NET Framework 4.8 Developer Pack/targeting pack
+Requirements
+
+* Windows 10 or Windows 11
+* A version of Visual Studio 2022 or a more recent version of Visual Studio that supports desktop development for the .NET Framework
+* The .NET desktop development Visual Studio workload
+* .NET Framework 4.8 Developer Pack or targeting pack
 
 No database, web service, third-party package, or internet connection is required.
 
-## How to compile
+How to compile
 
-1. Open `MunicipalCitizenReporting.sln` in Visual Studio.
-2. If Visual Studio prompts for missing components, install the .NET desktop development workload and the .NET Framework 4.8 targeting pack through Visual Studio Installer.
-3. Select `Debug` and `Any CPU` from the solution configuration controls.
-4. Choose **Build > Build Solution**, or press `Ctrl+Shift+B`.
-5. Confirm that the Output window reports a successful build with no errors.
+1. Open MunicipalCitizenReporting.sln in Visual Studio.
+2. When Visual Studio asks for missing components, you should use the Visual Studio Installer to install the .NET desktop development workload and the .NET Framework 4.8 targeting pack.
+3. Choose 'Debug' and 'Any CPU' from the solution configuration options.
+4. Select Build > Build Solution or press Ctrl+Shift+B.
+5. Make sure that the Output window indicates that the build has been successful with no errors.
 
-The compiled application is written to `MunicipalCitizenReporting\bin\Debug\MunicipalCitizenReporting.exe` for a Debug build or the corresponding `bin\Release` directory for a Release build.
+For a Debug build the compiled application is written to MunicipalCitizenReporting\bin\Debug\MunicipalCitizenReporting.exe while for a Release build it is written to the corresponding bin\Release directory.
 
-## How to run
+How to run
 
-1. Open `MunicipalCitizenReporting.sln` in Visual Studio.
+1. Open MunicipalCitizenReporting.sln in Visual Studio.
 2. Build the solution.
-3. Press `F5` to start with debugging, or `Ctrl+F5` to start without debugging.
-4. The **Municipal Citizen Services** main menu appears first.
+3. To begin debugging press F5, or press Ctrl+F5 if you want to start without debugging.
+4. The main menu for Municipal Citizen Services is displayed first.
 
-## How to use
+How to use
 
-1. On the main menu, select **Report Issues**.
-2. Enter the location where the issue occurred.
+1. To select Report Issues, go to the main menu.
+2. Input the location of where the problem took place.
 3. Select a municipal category.
-4. Enter a clear, detailed description.
-5. Optionally choose **Attach File** and select a JPG, JPEG, PNG, PDF, DOC, or DOCX file. The selected filename is displayed. Choose **Remove** to clear it.
-6. Follow the completion bar and encouraging message as the required fields are completed. A valid report reaches 100%; the attachment remains optional.
-7. Select **Submit Report**. Missing required information is highlighted and explained.
-8. After a valid submission, note the generated `REQ-####` reference number and `Submitted` status. The form resets for another report.
-9. Select **View Captured Issues** to open the read-only session history. It shows the reference number, location, category, description, date reported, status, and attachment filename for every report submitted while the application is running.
-10. Select **Back to Main Menu** (or press `Esc`) to return without closing the application.
+4. Type a clear and detailed description.
+5. You may attach a file by selecting Attach File and then picking a JPG, JPEG, PNG, PDF, DOC, or DOCX file; the name of the selected file is shown. You can choose Remove to clear it.
+6. As you fill in the required fields, please follow the completion bar and the encouraging message. The report has to reach 100% while the attachment is still optional.
+7. Choose the option Submit Report; if any required information is missing it will be highlighted and explained.
+8. Once you have made a valid submission, please note the generated REQ-#### reference number and confirm that the status is 'Submitted'. The form will then reset so that you can prepare another report.
+9. To open the read-only session history choose View Captured Issues. This display shows the reference number, location, category, description, date reported, status, and attachment filename for each report that was submitted while the application was running.
+10. To go back to the main menu (or press Esc) without quitting the application.
 
-## Data storage
+Data storage
 
-Reports are stored in memory in a `List<ReportedIssue>` managed by the shared `IssueRepository`. Reports remain available while the application is running and while the user moves between forms. Because this version intentionally has no database, all report data and reference-number state reset when the application closes.
+The reports are kept in memory within a List<ReportedIssue> which is managed by the shared IssueRepository. The reports continue to be accessible both while the application is running and when the user navigates between different forms. Since this version deliberately does not include a database, all the report data and the reference-number state are reset when the application is closed.
 
-`List<ReportedIssue>` is appropriate for Part 1 because it keeps multiple strongly typed reports in submission order, supports straightforward additions and read-only display, and does not introduce persistence that is outside the assignment scope. The singleton `IssueRepository.Instance` is the application's one shared source of session reports.
+List<ReportedIssue> should be used in Part 1 since it maintains the various strongly typed reports in the order in which they are submitted, allows for simple additions and provides for read-only display, and doesn't include any kind of persistence that is outside the scope of the assignment—the singleton IssueRepository.Instance is the application's single common source of session reports.
 
-The optional attachment is represented by its selected local file path. The application does not upload or copy the file.
+The optional attachment is shown by the path to the local file that has been chosen. The programme neither uploads nor copies the file.
 
-## User engagement strategy
+User engagement strategy
 
-The selected strategy is **Service-Request Tracking and Status Updates**. Every successful submission receives a unique `REQ-####` reference number, a date and time, and the initial status `Submitted`. The confirmation message displays the reference and status, and **View Captured Issues** provides a read-only history of captured requests. These features give residents evidence that their issue was formally recorded without implementing the later full status-management workflow.
+The strategy chosen is Service-Request Tracking and Status Updates. Each time a submission is successfully made, it is given a unique REQ-#### reference number together with a date and time and the initial status of Submitted. The confirmation message shows the reference and status, while View Captured Issues offers a read-only record of the captured requests. Because of these features, residents have proof that their complaint has been officially recorded even though the full status-management workflow is not carried out.
 
-## Future functionality
+Future functionality
 
 The main menu displays these planned options, but they are intentionally disabled for later project parts:
 
-- Local Events and Announcements
-- Service Request Status
+* Local Events and Announcements
+* Service Request Status
 
-The separate `Models`, `Data`, and `Forms` folders keep the application straightforward to extend when those features are introduced.
+The separate Models, Data, and Forms folders keep the application straightforward to extend when those features are introduced.
