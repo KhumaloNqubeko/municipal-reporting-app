@@ -39,7 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\IssueRepository.cs" />
+    <Compile Include="Data\EventManager.cs" />
+    <Compile Include="Data\PriorityQueue.cs" />
+    <Compile Include="Data\CitizenService.cs" />
     <Compile Include="Forms\CapturedIssuesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Branding.cs" />
+    <Compile Include="Forms\CitizenForms.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\CapturedIssuesForm.Designer.cs">
@@ -51,6 +58,12 @@
     <Compile Include="Forms\MainMenuForm.Designer.cs">
       <DependentUpon>MainMenuForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LocalEventsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EventDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ReportIssueForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,8 +71,14 @@
       <DependentUpon>ReportIssueForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ReportedIssue.cs" />
+    <Compile Include="Models\MunicipalEvent.cs" />
+    <Compile Include="Models\SearchRecord.cs" />
+    <Compile Include="Models\CitizenModels.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\ukhahlamba_logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
