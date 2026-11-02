@@ -1,69 +1,158 @@
-Municipal Citizen Reporting
+# Okhahlamba Municipal Services Application
 
-Project overview
+## Overview
 
-Municipal Citizen Reporting is a Windows Forms application written in C# which enables residents to report municipal service problems, for example potholes, water leaks, electrical faults, sanitation issues, and streetlight faults. Within the present academic project scope, the function for reporting issues is implemented while the other municipal services that were planned for inclusion are displayed but not available.
+This C# Windows Forms application is a citizen-facing academic project for Okhahlamba Local Municipality, KwaZulu-Natal. It combines the Part 1 issue-reporting workflow with a Part 2 municipal dashboard, local events, announcements, priority alerts, search, favourites, likes and behaviour-based recommendations.
 
-The system gives each report a unique reference number beginning with REQ-1001 and states that it has been Submitted when a resident makes a submission. The report includes various important details such as the reference number, the location, the municipal category, a description, any supporting files that have been attached, the date and time of submission, and its present status.
 
-Residents have the option of looking at a read-only record of all the reports that they have submitted during the present application session.
+## Requirements
 
-Requirements
+- Windows 10 or Windows 11
+- Visual Studio 2022 or later with the **.NET desktop development** workload
+- .NET Framework 4.8 Developer/Targeting Pack
 
-* Windows 10 or Windows 11
-* A version of Visual Studio 2022 or a more recent version of Visual Studio that supports desktop development for the .NET Framework
-* The .NET desktop development Visual Studio workload
-* .NET Framework 4.8 Developer Pack or targeting pack
+## How to Compile
 
-No database, web service, third-party package, or internet connection is required.
+1. Open `MunicipalCitizenReporting.sln` in Visual Studio.
+2. Select **Debug** and **Any CPU**.
+3. Choose **Build > Build Solution**, or press `Ctrl+Shift+B`.
+4. Confirm the Output window reports a successful build.
 
-How to compile
+Command-line build (when MSBuild or a current .NET SDK is installed):
 
-1. Open MunicipalCitizenReporting.sln in Visual Studio.
-2. When Visual Studio asks for missing components, you should use the Visual Studio Installer to install the .NET desktop development workload and the .NET Framework 4.8 targeting pack.
-3. Choose 'Debug' and 'Any CPU' from the solution configuration options.
-4. Select Build > Build Solution or press Ctrl+Shift+B.
-5. Make sure that the Output window indicates that the build has been successful with no errors.
+```powershell
+dotnet msbuild MunicipalCitizenReporting.sln /t:Rebuild /p:Configuration=Debug
+```
 
-For a Debug build the compiled application is written to MunicipalCitizenReporting\bin\Debug\MunicipalCitizenReporting.exe while for a Release build it is written to the corresponding bin\Release directory.
+The Debug executable is written to `MunicipalCitizenReporting\bin\Debug\MunicipalCitizenReporting.exe`.
 
-How to run
+## How to Run
 
-1. Open MunicipalCitizenReporting.sln in Visual Studio.
-2. Build the solution.
-3. To begin debugging press F5, or press Ctrl+F5 if you want to start without debugging.
-4. The main menu for Municipal Citizen Services is displayed first.
+Press `F5` in Visual Studio to debug or `Ctrl+F5` to run without debugging. The application starts on the Okhahlamba Municipal Services dashboard.
 
-How to use
+## Part 1 — Report Issues
 
-1. To select Report Issues, go to the main menu.
-2. Input the location of where the problem took place.
-3. Select a municipal category.
-4. Type a clear and detailed description.
-5. You may attach a file by selecting Attach File and then picking a JPG, JPEG, PNG, PDF, DOC, or DOCX file; the name of the selected file is shown. You can choose Remove to clear it.
-6. As you fill in the required fields, please follow the completion bar and the encouraging message. The report has to reach 100% while the attachment is still optional.
-7. Choose the option Submit Report; if any required information is missing it will be highlighted and explained.
-8. Once you have made a valid submission, please note the generated REQ-#### reference number and confirm that the status is 'Submitted'. The form will then reset so that you can prepare another report.
-9. To open the read-only session history choose View Captured Issues. This display shows the reference number, location, category, description, date reported, status, and attachment filename for each report that was submitted while the application was running.
-10. To go back to the main menu (or press Esc) without quitting the application.
+Residents can enter a location, choose a service category, describe an issue, optionally select an attachment and submit it. Each valid report receives a session reference such as `REQ-1001` and a `Submitted` status. **View Captured Issues** shows the reports recorded during the current application session.
 
-Data storage
+## Part 2 — Local Events & Announcements
 
-The reports are kept in memory within a List<ReportedIssue> which is managed by the shared IssueRepository. The reports continue to be accessible both while the application is running and when the user navigates between different forms. Since this version deliberately does not include a database, all the report data and the reference-number state are reset when the application is closed.
+- A redesigned Okhahlamba municipal dashboard with Report an Issue, Local Events & Announcements, and citizen Quick Services.
+- A dashboard summary of the highest-priority active municipal sample alerts.
+- Chronological event, announcement and alert cards with full details.
+- Keyword search across title, description, category and location.
+- Category, date, type and Saved filters, plus clear no-result states.
+- Session likes/unlikes and save/remove-from-saved actions.
+- A dismissible critical-alert banner.
+- Transparent, behaviour-based recommendations with an explanation on each recommended card.
+- Realistic sample contexts such as Bergville, Winterton and nearby Okhahlamba wards.
 
-List<ReportedIssue> should be used in Part 1 since it maintains the various strongly typed reports in the order in which they are submitted, allows for simple additions and provides for read-only display, and doesn't include any kind of persistence that is outside the scope of the assignment—the singleton IssueRepository.Instance is the application's single common source of session reports.
+## Data Structures Used
 
-The optional attachment is shown by the path to the local file that has been chosen. The programme neither uploads nor copies the file.
+The structures are owned by `Data/EventManager.cs`, where each has a functional purpose visible in the application.
 
-User engagement strategy
+### Stack
 
-The strategy chosen is Service-Request Tracking and Status Updates. Each time a submission is successfully made, it is given a unique REQ-#### reference number together with a date and time and the initial status of Submitted. The confirmation message shows the reference and status, while View Captured Issues offers a read-only record of the captured requests. Because of these features, residents have proof that their complaint has been officially recorded even though the full status-management workflow is not carried out.
+`Stack<SearchRecord>` stores meaningful searches in last-in-first-out order. A record is added when the citizen presses Search with a keyword or active filter; ordinary keystrokes are not recorded. Recent behaviour contributes to recommendations.
 
-Future functionality
+### Queue
 
-The main menu displays these planned options, but they are intentionally disabled for later project parts:
+`Queue<MunicipalEvent>` receives normal upcoming events and announcements in chronological seed order. It represents the ordinary first-in-first-out municipal information stream, separate from urgent alerts.
 
-* Local Events and Announcements
-* Service Request Status
+### PriorityQueue
 
-The separate Models, Data, and Forms folders keep the application straightforward to extend when those features are introduced.
+`PriorityQueue<MunicipalEvent, int>` is a .NET Framework 4.8-compatible binary min-heap. It places priority 1 alerts before priorities 2 and 3. The dashboard and events-page banner consume active alerts in priority order. This custom generic is used because .NET Framework 4.8 predates the BCL `PriorityQueue` type.
+
+### Dictionary
+
+- `Dictionary<int, MunicipalEvent>` provides constant-time lookup for details, likes and saves.
+- `Dictionary<string, List<MunicipalEvent>>` groups events by category for direct category filtering.
+- Frequency dictionaries count category and keyword searches for recommendation scoring.
+
+### SortedDictionary
+
+`SortedDictionary<DateTime, List<MunicipalEvent>>` indexes items by date. The default upcoming view can traverse records chronologically and date filtering is straightforward.
+
+### HashSet
+
+- `HashSet<string>` provides a duplicate-free, sorted list for the Category filter.
+- `HashSet<int>` collections prevent duplicate session likes and saved items, while also making toggles and recommendation preference checks efficient.
+
+## Recommendation Algorithm
+
+Recommendations are deterministic rather than random. Expired events are excluded and event IDs are grouped to prevent duplicates. Each candidate receives:
+
+- `+5 × frequency` when its category matches a searched category.
+- `+3 × frequency` when its title, description or location matches a searched keyword.
+- `+4` when its category matches a liked item.
+- `+4` when its category matches a saved item.
+- `+2` when it matches one of the five newest records in the search-history stack.
+- `+2` when it occurs within seven days.
+
+Candidates are sorted by descending score and then by date. The top three appear in **Recommended For You**, with a plain-language reason such as “Recommended because it matches your search for ‘water’.” Saved candidates are omitted so the panel remains useful for discovery.
+
+## Project Structure
+
+- `Models` — reported issues, municipal events, enums and search records.
+- `Data` — Part 1 issue repository, Part 2 event manager and priority queue.
+- `Forms` — dashboard, report workflow, captured reports, local events and event details.
+
+## Citizen Features
+
+All preferences and interactions below are session-based. Event, interruption and contact records are explicitly sample/demo content and are not official live municipal information.
+
+### Municipal Alerts
+
+Priority 1 records are critical/high-priority items, priority 2 records are important warnings, and priority 3 records are general notices. The dashboard reads alerts through the existing heap-backed priority queue. Where an alert is linked to a service interruption, the dashboard also displays the canonical interruption status, affected area and expected-restoration time.
+
+### Outage Centre
+
+**Outages & Service Interruptions** displays sample electricity, water, roads, waste and other disruptions. Citizens can filter by service type, search an affected area, limit the list to My Area, and open detailed status/restoration information. `ServiceInterruption.RelatedEventId` links an important interruption to the existing municipal alert record instead of creating a second independent alert store.
+
+### My Area
+
+The dashboard’s **My Area** control derives its choices from event and interruption locations. The selected community is held for the application session. It can limit event/outage results and adds `+3` to recommendations whose location matches the selected area, with a plain-language explanation.
+
+### Notification Centre
+
+The dashboard notification button shows the live unread count. Notifications cover high-priority announcements, emergency alerts, service interruptions and approaching saved events. Citizens can open the related item, mark all notifications read, or clear individual notifications. Reminder keys prevent duplicate reminders during the session.
+
+### Local Events
+
+The existing search, category/date/type filters, priority banner, details view and recommendations remain available. Cards continue to distinguish actual events, announcements and alerts.
+
+### Likes and Saved Items
+
+Like/Unlike and Save/Remove Saved remain session-based and use duplicate-safe ID sets. The new **Saved Items** centre brings all saved events and announcements together and supports details, removal, and event interest.
+
+### I'm Interested
+
+Actual community events show an independent **I'm Interested** toggle and count. Announcements and alerts do not show this action. A `HashSet<int>` prevents duplicate interest, and categories previously marked interesting add `+4` to relevant recommendations.
+
+### Service Calendar
+
+The municipal calendar combines existing event/announcement data with planned interruptions without maintaining another content dataset. A `SortedDictionary<DateTime, List<CalendarActivity>>` provides chronological date lookup. The standard month selector supplies previous/next navigation and a separate **Today** action returns to the current date.
+
+### Municipal Contacts
+
+Professional contact cards cover emergency, general, electricity, water, roads, waste, billing and community categories. Every seeded number/address is visibly labelled DEMO/SAMPLE and uses the reserved `.invalid` domain. Copy Number and Copy Email provide lightweight clipboard actions, and the model is ready for verified details to replace the seeds.
+
+### Smart Recommendations
+
+The existing deterministic algorithm is extended rather than replaced. It now scores searched categories (`+5 × frequency`), keywords (`+3 × frequency`), liked categories (`+4`), saved categories (`+4`), interested-event categories (`+4`), My Area matches (`+3`), recent searches (`+2`) and items happening within seven days (`+2`). Results remain sorted by score/date and explain up to two contributing reasons.
+
+### Copy / Share Details
+
+Events and announcements can copy clean formatted text containing the municipality, title, date, time, location and description. A small status message confirms the clipboard action so no disruptive message box is required.
+
+### Data Structures
+
+- `Stack<SearchRecord>` stores newest-first meaningful search history used by recommendations.
+- `Queue<MunicipalEvent>` holds the ordinary chronological information stream; a reminder-processing queue handles approaching saved events.
+- `PriorityQueue<MunicipalEvent, int>` orders dashboard alerts, including the event records linked to important outages.
+- `Dictionary<int, MunicipalEvent>` provides ID lookup; category and frequency dictionaries support filtering and scoring.
+- `SortedDictionary<DateTime, List<MunicipalEvent>>` indexes existing events, while the service-calendar projection uses a date-sorted activity dictionary.
+- `HashSet<string>` maintains unique categories and notification deduplication keys. `HashSet<int>` collections prevent duplicate likes, saves and interests.
+
+### Additional Navigation
+
+The expanded Quick Services dashboard links Report Issue, Events & News, Outages, Service Calendar, Municipal Contacts, Saved Items, Notifications, My Municipality and My Area. It also shows important alerts, upcoming events and personalised recommendations.
