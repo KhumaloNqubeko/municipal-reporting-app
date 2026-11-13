@@ -38,6 +38,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Part3\**\*.cs" />
     <Compile Include="Data\IssueRepository.cs" />
     <Compile Include="Data\EventManager.cs" />
     <Compile Include="Data\PriorityQueue.cs" />
